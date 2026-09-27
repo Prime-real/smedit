@@ -183,5 +183,18 @@
   document.getElementById('finalSearch').addEventListener('input',()=>render('final'));
   render('client');render('final');
 </script>
+  <script>
+const SUPABASE_URL = "https://hiwbucxkkpzfbhboytkx.supabase.co";
+
+// Apni publishable key yahan paste karo
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_1kI5y8VfuPW7eEfuTCHKlw_S8Evi6B6";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+console.log("Prime Edits → Supabase connected");
+</script>
 </body>
 </html>
