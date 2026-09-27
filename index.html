@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prime Edits — Creator Workspace</title>
+  <meta name="description" content="Private creator-to-editor video handoff workspace." />
+  <style>
+    :root{
+      --bg:#07080d;--panel:#0e1119;--panel2:#121622;--line:#252a38;
+      --text:#f6f7fb;--muted:#8e96aa;--accent:#6d5cff;--accent2:#8d7cff;
+      --green:#35d39a;--red:#ff5c72;--orange:#ffb454;--shadow:0 20px 60px #0008;
+    }
+    *{box-sizing:border-box} body{margin:0;background:
+      radial-gradient(circle at 80% -10%,#342b7b55,transparent 35%),
+      radial-gradient(circle at 0% 100%,#17234c44,transparent 35%),var(--bg);
+      color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+    button,input{font:inherit}.app{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
+    aside{border-right:1px solid var(--line);padding:22px 16px;background:#090b11cc;backdrop-filter:blur(18px)}
+    .brand{display:flex;gap:11px;align-items:center;padding:8px 10px 26px}
+    .logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#bd72ff);
+      display:grid;place-items:center;font-weight:900;box-shadow:0 8px 30px #6d5cff44}
+    .brand b{font-size:16px}.brand span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+    .nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#aeb5c7;padding:12px 13px;
+      border-radius:11px;text-align:left;cursor:pointer}.nav button.active,.nav button:hover{background:#171b28;color:#fff}
+    .side-bottom{position:absolute;bottom:20px;width:210px}.secure{border:1px solid var(--line);padding:12px;border-radius:13px;background:#0d1018}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:6px}
+    main{min-width:0}.top{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;
+      justify-content:space-between;padding:0 28px;background:#080a10aa;backdrop-filter:blur(15px)}
+    .crumb{color:var(--muted)}.crumb strong{color:#fff}.role{display:flex;gap:9px;align-items:center}
+    .pill{padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:#111521;color:#cfd5e2;font-size:12px}
+    .content{padding:28px;max-width:1500px;margin:auto}.hero{display:flex;justify-content:space-between;align-items:end;margin-bottom:24px}
+    h1{font-size:30px;margin:0 0 7px;letter-spacing:-.8px}.sub{color:var(--muted);margin:0}
+    .hero-actions{display:flex;gap:9px}.btn{border:1px solid var(--line);background:#111521;color:#fff;padding:10px 14px;
+      border-radius:10px;cursor:pointer}.btn.primary{border-color:#786bff;background:linear-gradient(135deg,#5d4eff,#866fff);box-shadow:0 8px 25px #6d5cff2b}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+    .stat,.card{border:1px solid var(--line);background:linear-gradient(180deg,#11151f,#0d1017);border-radius:16px;box-shadow:var(--shadow)}
+    .stat{padding:17px}.stat small{color:var(--muted)}.stat b{display:block;font-size:25px;margin-top:7px}
+    .workspace{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{padding:17px;min-width:0}
+    .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.card-head h2{font-size:16px;margin:0}
+    .badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#17261f;color:#68e5b5;border:1px solid #224b3e}
+    .drop{border:1px dashed #3a4051;border-radius:14px;padding:30px 15px;text-align:center;background:#0b0e15;transition:.2s}
+    .drop.drag{border-color:var(--accent2);background:#17152a}.drop .icon{font-size:28px}.drop b{display:block;margin:8px 0 4px}
+    .drop p{margin:0 0 14px;color:var(--muted);font-size:12px}.drop input{display:none}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.search{flex:1;min-width:150px;background:#0b0e15;border:1px solid var(--line);
+      border-radius:9px;padding:10px;color:#fff;outline:none}.filter{padding:9px 11px;border:1px solid var(--line);background:#0b0e15;color:#bbc2d1;border-radius:9px}
+    .files{display:grid;gap:9px;max-height:450px;overflow:auto;padding-right:2px}.file{display:grid;grid-template-columns:54px 1fr auto;gap:11px;
+      align-items:center;border:1px solid #202532;background:#0b0e15;border-radius:12px;padding:9px}
+    .thumb{width:54px;height:42px;border-radius:8px;background:linear-gradient(135deg,#272d40,#171a24);display:grid;place-items:center;color:#aeb6c8;overflow:hidden}
+    .thumb img,.thumb video{width:100%;height:100%;object-fit:cover}.fname{font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .meta{color:var(--muted);font-size:11px;margin-top:3px}.actions{display:flex;gap:5px}.iconbtn{border:0;background:#171b26;color:#aeb6c7;width:32px;height:32px;border-radius:8px;cursor:pointer}
+    .iconbtn:hover{color:#fff;background:#232838}.fav{color:#ffcc55}.empty{padding:28px;color:var(--muted);text-align:center;border:1px dashed #2a3040;border-radius:12px}
+    .scan{margin-top:14px;padding:13px;border:1px solid #282e3c;border-radius:12px;background:#0a0d14;display:flex;justify-content:space-between;align-items:center}
+    .scan strong{font-size:12px}.scan span{color:var(--muted);font-size:11px;display:block;margin-top:3px}
+    .modal{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:10;padding:20px}.modal.show{display:grid}
+    .modalbox{width:min(420px,100%);background:#10131c;border:1px solid #303647;border-radius:18px;padding:22px;box-shadow:0 30px 100px #000b}
+    .modalbox h2{margin:0 0 7px}.modalbox p{color:var(--muted);line-height:1.5}.modalbox input{width:100%;padding:12px;border:1px solid var(--line);background:#090c12;color:#fff;border-radius:10px;outline:none;margin:10px 0}
+    .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}.error{color:#ff8091;font-size:12px;min-height:17px}
+    .toast{position:fixed;right:22px;bottom:22px;background:#161b27;border:1px solid #303748;padding:12px 15px;border-radius:10px;display:none;z-index:20}
+    .toast.show{display:block}.hidden{display:none!important}
+    @media(max-width:900px){.app{grid-template-columns:1fr}aside{display:none}.workspace{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.content{padding:18px}.hero{align-items:start;gap:15px;flex-direction:column}}
+    @media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.top{padding:0 15px}.hero-actions{width:100%}.hero-actions .btn{flex:1}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="logo">P</div><div><b>Prime Edits</b><span>Creator Workspace</span></div></div>
+    <div class="nav">
+      <button class="active">⌂ &nbsp; Workspace</button>
+      <button onclick="switchPanel('client')">↑ &nbsp; Client Uploads</button>
+      <button onclick="switchPanel('final')">↓ &nbsp; Final Edits</button>
+      <button onclick="showToast('Favorites view is ready in this UI prototype.')">★ &nbsp; Favorites</button>
+      <button onclick="openModal('delete')">⌫ &nbsp; Delete Manager</button>
+    </div>
+    <div class="side-bottom"><div class="secure"><span class="dot"></span><b>Private workspace</b><div style="color:#737b8e;font-size:11px;margin-top:5px">Cloud storage connection ready to add</div></div></div>
+  </aside>
+
+  <main>
+    <div class="top"><div class="crumb">Prime Edits / <strong>Workspace</strong></div><div class="role"><span class="pill">Creator</span><span class="pill">Secure mode</span></div></div>
+    <div class="content">
+      <div class="hero">
+        <div><h1>Creator ↔ Editor Hub</h1><p class="sub">Raw assets in. Finished edits out. Everything organized in one private workspace.</p></div>
+        <div class="hero-actions"><button class="btn" onclick="openModal('client')">Client Access</button><button class="btn primary" onclick="openModal('editor')">Editor Access</button></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><small>Client assets</small><b id="clientCount">0</b></div>
+        <div class="stat"><small>Final edits</small><b id="finalCount">0</b></div>
+        <div class="stat"><small>Favorites</small><b id="favCount">0</b></div>
+        <div class="stat"><small>Workspace</small><b>Private</b></div>
+      </div>
+
+      <div class="workspace">
+        <section class="card" id="clientPanel">
+          <div class="card-head"><h2>Client — Raw Assets</h2><span class="badge">UPLOAD + VIEW</span></div>
+          <div class="drop" id="clientDrop">
+            <div class="icon">☁</div><b>Drop videos & images here</b><p>MP4, MOV, WEBM, JPG, PNG, WEBP and more</p>
+            <label class="btn primary"><input id="clientInput" type="file" multiple accept="video/*,image/*">Choose files</label>
+          </div>
+          <div class="toolbar"><input class="search" id="clientSearch" placeholder="Search client assets…"><button class="filter" onclick="filterFavorites('client')">★ Favorites</button></div>
+          <div class="files" id="clientFiles"></div>
+          <div class="scan"><div><strong>Smart Asset Scan</strong><span>Detect video/image type, duration, dimensions and duplicates.</span></div><button class="btn" onclick="scanFiles('client')">Run scan</button></div>
+        </section>
+
+        <section class="card" id="finalPanel">
+          <div class="card-head"><h2>Final — Editor Deliverables</h2><span class="badge">UPLOAD + VIEW</span></div>
+          <div class="drop" id="finalDrop">
+            <div class="icon">⇩</div><b>Drop completed edits here</b><p>Upload final videos, thumbnails or delivery files</p>
+            <label class="btn primary"><input id="finalInput" type="file" multiple accept="video/*,image/*,.zip,.pdf">Choose files</label>
+          </div>
+          <div class="toolbar"><input class="search" id="finalSearch" placeholder="Search final edits…"><button class="filter" onclick="filterFavorites('final')">★ Favorites</button></div>
+          <div class="files" id="finalFiles"></div>
+          <div class="scan"><div><strong>Delivery Check</strong><span>Detect media type and flag duplicate filenames before delivery.</span></div><button class="btn" onclick="scanFiles('final')">Check files</button></div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modalbox">
+    <h2 id="modalTitle">Private access</h2><p id="modalText">Enter the access password.</p>
+    <input id="password" type="password" placeholder="Access password" autocomplete="off">
+    <div class="error" id="error"></div>
+    <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="submitModal()">Continue</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const state = {client:[], final:[], favorites:new Set(), modal:null};
+  const modalInfo = {
+    client:{title:'Client access',text:'This opens the raw-asset area. In production, validate this password on the server.'},
+    editor:{title:'Editor access',text:'This opens the final-delivery area. In production, validate this password on the server.'},
+    delete:{title:'Delete manager',text:'Deletion must require a separate server-side delete password.'}
+  };
+
+  function openModal(type){state.modal=type; document.getElementById('modalTitle').textContent=modalInfo[type].title;document.getElementById('modalText').textContent=modalInfo[type].text;document.getElementById('password').value='';document.getElementById('error').textContent='';document.getElementById('modal').classList.add('show');setTimeout(()=>document.getElementById('password').focus(),50)}
+  function closeModal(){document.getElementById('modal').classList.remove('show')}
+  function submitModal(){ 
+    // Deliberately no real passwords are stored in this public HTML.
+    // Connect this button to a Vercel API/Supabase Auth endpoint for production.
+    closeModal(); showToast('UI access gate triggered. Connect server-side auth before deployment.');
+  }
+  function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
+  function switchPanel(which){document.getElementById(which+'Panel').scrollIntoView({behavior:'smooth',block:'start'})}
+  function formatSize(n){if(n<1024) return n+' B';let u=['KB','MB','GB'];let i=-1;do{n/=1024;i++}while(n>=1024&&i<u.length-1);return n.toFixed(1)+' '+u[i]}
+  function addFiles(side, files){
+    [...files].forEach(file=>{
+      const id=crypto.randomUUID(); const url=URL.createObjectURL(file);
+      state[side].unshift({id,name:file.name,size:file.size,type:file.type,url,added:new Date()});
+    });
+    render(side);showToast(`${files.length} file${files.length>1?'s':''} added to ${side==='client'?'Client':'Final'} workspace`);
+  }
+  function render(side, onlyFav=false){
+    const q=document.getElementById(side+'Search').value.toLowerCase();
+    const box=document.getElementById(side+'Files');
+    let files=state[side].filter(f=>f.name.toLowerCase().includes(q));
+    if(onlyFav) files=files.filter(f=>state.favorites.has(f.id));
+    box.innerHTML=files.length?'':'<div class="empty">No files yet. Upload media to start this workspace.</div>';
+    files.forEach(f=>{
+      const fav=state.favorites.has(f.id);
+      const media=f.type.startsWith('image/')?`<img src="${f.url}" alt="">`:f.type.startsWith('video/')?`<video src="${f.url}" muted></video>`:'<span>FILE</span>';
+      const row=document.createElement('div');row.className='file';
+      row.innerHTML=`<div class="thumb">${media}</div><div><div class="fname">${escapeHtml(f.name)}</div><div class="meta">${escapeHtml(f.type||'file')} · ${formatSize(f.size)}</div></div><div class="actions"><button class="iconbtn ${fav?'fav':''}" title="Favorite" onclick="toggleFav('${f.id}','${side}')">${fav?'★':'☆'}</button><button class="iconbtn" title="Preview" onclick="preview('${f.url}')">◉</button><button class="iconbtn" title="Delete" onclick="requestDelete('${f.id}','${side}')">⌫</button></div>`;
+      box.appendChild(row);
+    });
+    document.getElementById(side+'Count').textContent=state[side].length;
+    document.getElementById('favCount').textContent=state.favorites.size;
+  }
+  function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+  function toggleFav(id,side){state.favorites.has(id)?state.favorites.delete(id):state.favorites.add(id);render(side)}
+  function filterFavorites(side){render(side,true)}
+  function preview(url){window.open(url,'_blank','noopener')}
+  function requestDelete(id,side){openModal('delete');showToast('After server auth, deletion will happen here.')}
+  function scanFiles(side){const files=state[side];if(!files.length)return showToast('Nothing to scan yet.');const names=new Set(),dupes=[];files.forEach(f=>names.has(f.name)?dupes.push(f.name):names.add(f.name));showToast(dupes.length?`Scan found ${dupes.length} duplicate filename(s).`:`Scan complete — ${files.length} file(s) checked.`)}
+  function wireDrop(drop,input,side){input.addEventListener('change',e=>addFiles(side,e.target.files));drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');addFiles(side,e.dataTransfer.files)})}
+  wireDrop(document.getElementById('clientDrop'),document.getElementById('clientInput'),'client');
+  wireDrop(document.getElementById('finalDrop'),document.getElementById('finalInput'),'final');
+  document.getElementById('clientSearch').addEventListener('input',()=>render('client'));
+  document.getElementById('finalSearch').addEventListener('input',()=>render('final'));
+  render('client');render('final');
+</script>
+</body>
+</html>
